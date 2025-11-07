@@ -1,24 +1,24 @@
 const checkboxes = ["opgg", "opggmulti", "ugg", "uggmulti", "dpm"];
-const defaults = { opgg: true, dpm: true }; // Standard: OP.GG & DPM an
+const defaults = { opgg: true, dpm: true }; // opgg abd DPM.lol are default 
 
-// UI initialisieren
+// Initialize UI
 document.addEventListener("DOMContentLoaded", async () => {
-  // gespeicherte Werte laden
+  // load stored data (checkboxes u checked)
   const stored = await chrome.storage.sync.get(checkboxes);
 
-  // Checkboxen setzen
+  // set checkboxes
   for (const id of checkboxes) {
     const el = document.getElementById(id);
     el.checked = stored[id] ?? defaults[id] ?? false;
 
-    // Änderungen speichern
+    // save changes to checkboxes
     el.addEventListener("change", () => {
       chrome.storage.sync.set({ [id]: el.checked });
     });
   }
 });
 
-// Button & Enter
+// Button / Enter
 document.getElementById("openBtn").addEventListener("click", openProfiles);
 document.getElementById("names").addEventListener("keydown", (e) => {
   if (e.key === "Enter") openProfiles();
@@ -55,15 +55,12 @@ function openProfiles() {
     tags.add(tagUpper);
   }
 
-  // Multisearch (nach tag)
-  // Multisearch (immer feste Regionen)
+
 if (states.opggmulti || states.uggmulti) {
-  // OP.GG: alles komplett URL-encoden
   const opggNames = players
     .map(p => encodeURIComponent(p.trim()))
     .join("%2C+");
 
-  // U.GG: '#' wird durch '-' ersetzt, Leerzeichen bleiben encoded
   const uggNames = players
     .map(p => p.trim().replace("#", "-").replaceAll(" ", "%20"))
     .join(",");
@@ -80,3 +77,5 @@ if (states.opggmulti || states.uggmulti) {
 }
 
 }
+// Maybe extra button for Region EUW with that input, default EUW then saved. Dropdown oder Eingabe??
+// 
